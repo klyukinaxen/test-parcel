@@ -1,0 +1,12 @@
+.sunbed {
+    /* background-color: rgb(211, 211, 211); */
+    color: #fff;
+    border: none;
+    margin: 10px;
+    width: 50px;
+    height: 20px;
+}
+
+.sunbed:focus {
+    outline: none;
+}
