@@ -21,7 +21,7 @@ const ButtonComponent = observer(() => {
     const clickRemove = () => {
         store.removeCircle(getId())
         const len = store.arrayCircles.length
-        console.log("координаты центра всех кружочков:", store.arrayCircles[len - 1].x);
+        store.arrayCircles.map((point) => { console.log("координаты кружочка", " х: ", point.x, "y: ", point.y); })
         console.log("координаты центра последнего нарисованного круга:", store.arrayCircles[len - 1].x, " ", store.arrayCircles[len - 1].y);
     };
 
@@ -92,15 +92,14 @@ const ButtonComponent = observer(() => {
                             fill={circle.color}
                             draggable
                         />
-
                     )}
-                    {/* <Line
-                        x={}
-                        y={}
+                </Layer>
+                <Layer>
+                    <Line
                         points={[0, 0, 100, 100]}
-                        // closed
                         stroke="black"
-                    /> */}
+                    >
+                    </Line>
                 </Layer>
             </Stage>
         </div>
