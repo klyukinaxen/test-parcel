@@ -27,7 +27,7 @@ export class Timer {
 
     increaseTimer() {
         this.secondsPassed += 1
-        console.log(this.secondsPassed);
+        // console.log(this.secondsPassed);
     }
 
     randomColor() {

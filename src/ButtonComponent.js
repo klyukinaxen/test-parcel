@@ -28,25 +28,36 @@ const ButtonComponent = observer(() => {
     const clickChangeColor = () => store.changeColor(getId())
 
     const generateCircle = () => {
+        const radius = getRandomIntInclusive(20, 50)
         return {
-            x: Math.random() * window.innerWidth,
-            y: Math.random() * window.innerHeight,
-            radius: getRandomIntInclusive(20, 50),
+            x: getRandomIntInclusive(radius, window.innerWidth - radius),
+            y: getRandomIntInclusive(radius, window.innerHeight - radius),
+            radius: radius,
             color: "blue"
         }
     }
 
-    // const lines = [];
-    // const linesDraw = lines.map((line, index) => {
-    //     if (index === (lines.length - 1)) {
-    //         console.log(lines);
-    //         return [line, lines[0]];
-    //     }
-    //     return [line, lines[index + 1]]
-    // // })
-    // const clickHandlerLineDraw = () => {
-    //     console.log(linesDraw);
-    // };
+    const points = store.arrayCircles;
+    const lines = points.length > 1 && (
+        <Line
+            points={points.map((point) => [point.x, point.y]).flat()}
+            stroke="black"
+        >
+        </Line>
+    )
+
+    const clickHandlerLineDraw = () => {
+        for (let i = 0; i < lines.length; i++) {
+            console.log(lines[i].x);
+        }
+    };
+
+    const clickHandlerNumbers = () => {
+        // const tick = setInterval(() => {
+
+        // }, 1000);
+
+    };
 
     return (
         <div>
@@ -80,26 +91,31 @@ const ButtonComponent = observer(() => {
                 Change Color
             </Button>
 
+            <Button
+                variant="contained"
+                onClick={clickHandlerLineDraw}
+            >
+                Draw Lines
+            </Button>
+
+
+
             <Stage width={window.innerWidth} height={window.innerHeight}>
                 <Layer>
-                    {store.arrayCircles.map((circle, id) =>
-                        <Circle
-                            key={id}
-                            x={circle.x}
-                            y={circle.y}
-                            radius={circle.radius}
-                            opacity={0.8}
-                            fill={circle.color}
-                            draggable
-                        />
-                    )}
-                </Layer>
-                <Layer>
-                    <Line
-                        points={[0, 0, 100, 100]}
-                        stroke="black"
-                    >
-                    </Line>
+                    <>
+                        {store.arrayCircles.map((circle, id) =>
+                            <Circle
+                                key={id}
+                                x={circle.x}
+                                y={circle.y}
+                                radius={circle.radius}
+                                opacity={0.8}
+                                fill={circle.color}
+                                draggable
+                            />
+                        )}
+                    </>
+                    {lines}
                 </Layer>
             </Stage>
         </div>
