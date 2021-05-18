@@ -1,3 +1,12 @@
+body {
+    margin: 0;
+}
+
+body, html {
+    width: 100vw;
+    height: 100vh;
+}
+
 .sunbed {
     /* background-color: rgb(211, 211, 211); */
     color: #fff;
