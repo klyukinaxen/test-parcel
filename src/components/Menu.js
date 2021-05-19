@@ -20,6 +20,9 @@ const Menu = () => {
                 <li>
                     <Link to="/rectangles">RectanglesExample</Link>
                 </li>
+                <li>
+                    <Link to="/snake-game">SnakeGame</Link>
+                </li>
             </ul>
         </div>
     );

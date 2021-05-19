@@ -1,0 +1,37 @@
+/*Grid Draw*/
+
+.grid {
+    margin: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.line {
+    display: flex;
+    flex-direction: row;
+    width: 300px;
+    height: 30px;
+}
+
+.line:last-child {
+    border-bottom: 0.3px solid #000;
+}
+
+.column {
+    display: flex;
+    flex-direction: column;
+    width: 30px;
+    height: 30px;
+}
+
+.column {
+    border-top: 0.3px solid #000;
+    border-right: 0.3px solid #000;
+}
+
+.column:first-child {
+    border-left: 0.3px solid #000;
+}
+
+/**/

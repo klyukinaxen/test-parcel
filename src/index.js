@@ -14,7 +14,9 @@ import Menu from "./components/Menu.js";
 import AnimatedNumber from './components/AnimatedNumber.jsx'
 import "./style.css"
 import { myTimer, TimerContext } from "./store/points.js";
+import { snake, SnakeContext } from "./store/snake.js";
 import { rectangles, RectanglesContext } from "./store/rectangles.js";
+import SnakeExample from "./components/Snake.jsx";
 
 
 
@@ -38,6 +40,11 @@ const App = () => {
           <RectanglesContext.Provider value={rectangles}>
             <RectanglesExample />
           </RectanglesContext.Provider>
+        </Route>
+        <Route path="/snake-game">
+          <SnakeContext.Provider value={snake}>
+            <SnakeExample />
+          </SnakeContext.Provider>
         </Route>
       </Switch>
 
