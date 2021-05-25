@@ -23,22 +23,10 @@ export class Rectangles {
     }
 
     onMouseLeaveRectangle(id) {
-        // let colorOpacityInterval = setInterval(function () {
-        //     let t = 0;
-        //     for (let i = 0; i < 1; i += 0.2) {
-        //         t = i;
-        //         console.log(t);
-        //         // this.list[id].opacity = this.list[id].opacity + i;
-        //     }
-        //     if (t >= 1) {
-        //         clearInterval(colorOpacityInterval);
-        //     }
-        // }, 1000);
         console.log("leave");
     }
 
     fadeRectangle(id) {
-
     }
 
     listInitialize(columns, rows, layerDimensions) {
