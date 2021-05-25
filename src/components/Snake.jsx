@@ -19,6 +19,8 @@ const SnakeExample = (props) => {
     useEffect(() => {
         console.log('mount');
         fillGrid();
+        isBorderCheck();
+
 
         return () => {
             console.log('unmount')
@@ -27,11 +29,18 @@ const SnakeExample = (props) => {
 
     isBorderCheck = () => {
         for (let i = 0; i < grid.length; i++) {
-            if (i == 0 || i == (grid.length - 1)) console.log("border");
+            let innerLength = grid[i].length;
+            if (i == 0 || i == (grid.length - 1)) {
+                for (let t = 0; t < innerLength; t++)
+                    // console.log(grid[i][t].isBorder);
+                    grid[i][t].isBorder = true;
+            }
             else
-                for (let j = 0; j < grid.length; j++) {
-                    if (j == 0 || j == (grid.length - 1)) {
-                        console.log("border");
+                for (let j = 0; j < innerLength; j++) {
+                    if (j == 0 || j == (innerLength - 1)) {
+                        // console.log(grid[i][j].isBorder);
+
+                        grid[i][j].isBorder = true;
                     }
                 }
         }
@@ -48,17 +57,14 @@ const SnakeExample = (props) => {
                     isBorder: false
                 }
 
-                isBorderCheck();
                 // начальное состояние игры логика
 
                 gridRow.push(cell)
             }
-
             newGrid.push(gridRow)
         }
-
         setGrid(newGrid)
-
+        console.log(grid);
     }
 
 
@@ -83,10 +89,10 @@ const SnakeExample = (props) => {
         )
     })
 
-    console.log(gridItems);
-
+    // console.log(grid);
 
     return (
+
         <div className="grid">
             {gridItems}
         </div>
