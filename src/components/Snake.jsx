@@ -40,16 +40,24 @@ const SnakeExample = (props) => {
     useEvent('keyup', (ev) => {
         switch (ev.code) {
             case 'ArrowUp':
-                setSnakeState(SNAKE_STATE.UP)
+                if ((snakeState !== SNAKE_STATE.UP && snakeState !== SNAKE_STATE.DOWN)) {
+                    setSnakeState(SNAKE_STATE.UP)
+                }
                 break;
             case 'ArrowDown':
-                setSnakeState(SNAKE_STATE.DOWN)
+                if (snakeState !== SNAKE_STATE.UP && snakeState !== SNAKE_STATE.DOWN) {
+                    setSnakeState(SNAKE_STATE.DOWN)
+                }
                 break;
             case 'ArrowRight':
-                setSnakeState(SNAKE_STATE.RIGHT)
+                if (snakeState !== SNAKE_STATE.RIGHT && snakeState !== SNAKE_STATE.LEFT) {
+                    setSnakeState(SNAKE_STATE.RIGHT)
+                }
                 break;
             case 'ArrowLeft':
-                setSnakeState(SNAKE_STATE.LEFT)
+                if (snakeState !== SNAKE_STATE.RIGHT && snakeState !== SNAKE_STATE.LEFT) {
+                    setSnakeState(SNAKE_STATE.LEFT)
+                }
                 break;
         }
     })
@@ -58,9 +66,9 @@ const SnakeExample = (props) => {
      * запускается движение змейки
      */
 
-    useInterval(() => {
+    const handle = useInterval(() => {
         moveSnake()
-    }, 1000);
+    }, 500);
 
     const snakeInit = () => {
         const startSnake = [
@@ -101,13 +109,48 @@ const SnakeExample = (props) => {
      * в конце проверка: если новая клетка равна клетке границы + 1, то clearInterval и вывод сообщения о конце игры
      */
     function moveSnake() {
-        if (snakeState === SNAKE_STATE.UP) { //(то берем значение следующей клетки вверху змейки и последний элемент перемещаем туда)
-            const snakeCopy = [...snake];
-            const snakeLastElement = snakeCopy.pop();
-            snakeLastElement.row = snakeCopy[0].row - 1;
-            snakeCopy.unshift(snakeLastElement);
-            console.log('snakeCopy', snakeCopy);
-            setSnake(snakeCopy);
+        if (snake[0].column === 0 || snake[0].row === 0) {
+            // clearInterval(handle);
+            // alert("You lose");
+            // handle = 0;
+        }
+        else {
+            if (snakeState === SNAKE_STATE.UP) { //(то берем значение следующей клетки вверху змейки и последний элемент перемещаем туда)
+                const snakeCopy = [...snake];
+                const snakeLastElement = snakeCopy.pop();
+                snakeLastElement.row = snakeCopy[0].row - 1;
+                snakeLastElement.column = snakeCopy[0].column;
+                snakeCopy.unshift(snakeLastElement);
+                console.log('snakeCopy', snakeCopy);
+                setSnake(snakeCopy);
+            }
+            if (snakeState === SNAKE_STATE.DOWN) {
+                const snakeCopy = [...snake];
+                const snakeLastElement = snakeCopy.pop();
+                snakeLastElement.row = snakeCopy[0].row + 1;
+                snakeLastElement.column = snakeCopy[0].column;
+                snakeCopy.unshift(snakeLastElement);
+                console.log('snakeCopy', snakeCopy);
+                setSnake(snakeCopy);
+            }
+            if (snakeState === SNAKE_STATE.RIGHT) {
+                const snakeCopy = [...snake];
+                const snakeLastElement = snakeCopy.pop();
+                snakeLastElement.row = snakeCopy[0].row;
+                snakeLastElement.column = snakeCopy[0].column + 1;
+                snakeCopy.unshift(snakeLastElement);
+                console.log('snakeCopy', snakeCopy);
+                setSnake(snakeCopy);
+            }
+            if (snakeState === SNAKE_STATE.LEFT) {
+                const snakeCopy = [...snake];
+                const snakeLastElement = snakeCopy.pop();
+                snakeLastElement.column = snakeCopy[0].column - 1;
+                snakeLastElement.row = snakeCopy[0].row;
+                snakeCopy.unshift(snakeLastElement);
+                console.log('snakeCopy', snakeCopy);
+                setSnake(snakeCopy);
+            }
         }
     }
 
