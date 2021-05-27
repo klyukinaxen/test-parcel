@@ -6,8 +6,8 @@
 }
 
 .grid {
-    height: 300px;
-    width: 300px;
+    /* height: 300px; */
+    /* width: 300px; */
     margin: auto;
 }
 
@@ -20,9 +20,17 @@
 
 .grid-item {
     outline: 1px solid #000;
-    width: 30px;
-    height: 30px;
+    width: 16px;
+    height: 16px;
     background: gainsboro;
+}
+
+.grid-item.border {
+    background: black;
+}
+
+.grid-item.snake {
+    background: gray;
 }
 
 /**/

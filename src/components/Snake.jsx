@@ -1,49 +1,82 @@
 import classNames from "classnames";
 import React, { useContext, useEffect, useState } from "react";
 
+import { useEvent, useInterval } from "../hooks";
+
 import "./snakeStyle.css"
 
+const SNAKE_STATE = {
+    UP: "UP",
+    DOWN: "DOWN",
+    LEFT: "LEFT",
+    RIGHT: "RIGHT"
+}
 
 const SnakeExample = (props) => {
 
-    // state = {
-    //     rows: 10,
-    //     cols: 10,
-    //     grid: []
-    // }
-
-    const [rows, setRows] = useState(10)
-    const [cols, setCols] = useState(10)
+    const [rows, setRows] = useState(30)
+    const [cols, setCols] = useState(45)
     const [grid, setGrid] = useState([])
+
+    /**
+     * Направление движения змейки
+     */
+    const [snakeState, setSnakeState] = useState(SNAKE_STATE.UP)
+    const [snake, setSnake] = useState([])
 
     useEffect(() => {
         console.log('mount');
         fillGrid();
-        isBorderCheck();
+        snakeInit();
 
+        console.log('snake 3', snake);
 
         return () => {
-            console.log('unmount')
+            console.log('snake 6', snake);
+            console.log('unmount');
         }
     }, [])
 
-    isBorderCheck = () => {
-        for (let i = 0; i < grid.length; i++) {
-            let innerLength = grid[i].length;
-            if (i == 0 || i == (grid.length - 1)) {
-                for (let t = 0; t < innerLength; t++)
-                    // console.log(grid[i][t].isBorder);
-                    grid[i][t].isBorder = true;
-            }
-            else
-                for (let j = 0; j < innerLength; j++) {
-                    if (j == 0 || j == (innerLength - 1)) {
-                        // console.log(grid[i][j].isBorder);
-
-                        grid[i][j].isBorder = true;
-                    }
-                }
+    useEvent('keyup', (ev) => {
+        switch (ev.code) {
+            case 'ArrowUp':
+                setSnakeState(SNAKE_STATE.UP)
+                break;
+            case 'ArrowDown':
+                setSnakeState(SNAKE_STATE.DOWN)
+                break;
+            case 'ArrowRight':
+                setSnakeState(SNAKE_STATE.RIGHT)
+                break;
+            case 'ArrowLeft':
+                setSnakeState(SNAKE_STATE.LEFT)
+                break;
         }
+    })
+
+    /**
+     * запускается движение змейки
+     */
+
+    useInterval(() => {
+        moveSnake()
+    }, 1000);
+
+    const snakeInit = () => {
+        const startSnake = [
+            {
+                row: 14,
+                column: 22
+            }, {
+                row: 15,
+                column: 22
+            }, {
+                row: 16,
+                column: 22
+            }
+        ]
+
+        setSnake(startSnake)
     }
 
     const fillGrid = () => {
@@ -52,33 +85,46 @@ const SnakeExample = (props) => {
             const gridRow = []
             for (let col = 0; col < cols; col++) {
                 const cell = {
-                    isSnake: false,
-                    isFood: false,
                     isBorder: false
                 }
-
-                // начальное состояние игры логика
-
+                if (row === 0 || row === (rows - 1) || col === 0 || col === (cols - 1)) {
+                    cell.isBorder = true;
+                }
                 gridRow.push(cell)
             }
             newGrid.push(gridRow)
         }
         setGrid(newGrid)
-        console.log(grid);
     }
 
+    /**
+     * в конце проверка: если новая клетка равна клетке границы + 1, то clearInterval и вывод сообщения о конце игры
+     */
+    function moveSnake() {
+        if (snakeState === SNAKE_STATE.UP) { //(то берем значение следующей клетки вверху змейки и последний элемент перемещаем туда)
+            const snakeCopy = [...snake];
+            const snakeLastElement = snakeCopy.pop();
+            snakeLastElement.row = snakeCopy[0].row - 1;
+            snakeCopy.unshift(snakeLastElement);
+            console.log('snakeCopy', snakeCopy);
+            setSnake(snakeCopy);
+        }
+    }
+
+    // console.log('snake render', snake);
 
     const gridItems = grid.map((row, rowIndex) => {
         return (
             <div className="grid-row" key={rowIndex}>
                 {
                     row.map((cell, cellIndex) => {
+                        const isSnake = !!snake.find((s) => s.row === rowIndex && s.column === cellIndex);
+
                         return (
                             <div
                                 className={classNames(["grid-item", {
-                                    'snake': cell.isSnake,
-                                    'food': cell.isFood,
-                                    'border': cell.isBorder
+                                    'border': cell.isBorder,
+                                    'snake': isSnake
                                 }])}
                                 key={`${rowIndex}-${cellIndex}`}
                             />
@@ -89,16 +135,11 @@ const SnakeExample = (props) => {
         )
     })
 
-    // console.log(grid);
-
     return (
-
         <div className="grid">
             {gridItems}
         </div>
     )
 }
-
-
 
 export default SnakeExample;
