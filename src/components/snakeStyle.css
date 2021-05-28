@@ -3,11 +3,10 @@
 .grid-container {
     display: flex;
     align-items: center;
+    position: relative;
 }
 
 .grid {
-    /* height: 300px; */
-    /* width: 300px; */
     margin: auto;
 }
 
@@ -19,18 +18,34 @@
 }
 
 .grid-item {
-    outline: 1px solid #000;
+    outline: 0.5px solid #000;
     width: 16px;
     height: 16px;
-    background: gainsboro;
+    background: rgb(250, 250, 250);
 }
 
 .grid-item.border {
-    background: black;
+    background: #000;
 }
 
 .grid-item.snake {
-    background: gray;
+    background: rgba(70, 70, 70, 0.836);
+}
+
+.grid-item.food {
+    background: rgb(126, 68, 68);
 }
 
 /**/
+
+.endGameContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: absolute;
+}
+
+.game-text {
+    font-size: 14px;
+    color: rgb(2, 46, 2);
+}

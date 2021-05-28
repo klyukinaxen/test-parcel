@@ -1,7 +1,8 @@
+import { useInterval } from "ahooks";
 import classNames from "classnames";
 import React, { useContext, useEffect, useState } from "react";
 
-import { useEvent, useInterval } from "../hooks";
+import { useEvent } from "../hooks";
 
 import "./snakeStyle.css"
 
@@ -14,25 +15,27 @@ const SNAKE_STATE = {
 
 const SnakeExample = (props) => {
 
-    const [rows, setRows] = useState(30)
-    const [cols, setCols] = useState(45)
+    const [rows, setRows] = useState(20)
+    const [cols, setCols] = useState(20)
     const [grid, setGrid] = useState([])
+
+    const [food, setFood] = useState({});
+    const [score, setScore] = useState(0);
 
     /**
      * Направление движения змейки
      */
     const [snakeState, setSnakeState] = useState(SNAKE_STATE.UP)
     const [snake, setSnake] = useState([])
+    const [delay, setDelay] = useState(300)
 
     useEffect(() => {
         console.log('mount');
         fillGrid();
         snakeInit();
-
-        console.log('snake 3', snake);
+        generateFood();
 
         return () => {
-            console.log('snake 6', snake);
             console.log('unmount');
         }
     }, [])
@@ -66,36 +69,41 @@ const SnakeExample = (props) => {
      * запускается движение змейки
      */
 
-    const handle = useInterval(() => {
-        moveSnake()
-    }, 500);
+    useInterval(() => {
+        moveSnake();
+    }, delay);
 
     const snakeInit = () => {
         const startSnake = [
             {
-                row: 14,
-                column: 22
+                x: 10,
+                y: 10
             }, {
-                row: 15,
-                column: 22
-            }, {
-                row: 16,
-                column: 22
+                x: 11,
+                y: 10
             }
         ]
 
         setSnake(startSnake)
     }
 
+    const generateFood = () => {
+        const startFood = {
+            x: getRandomIntInclusive(2, cols - 2),
+            y: getRandomIntInclusive(2, rows - 2)
+        }
+        setFood(startFood);
+    }
+
     const fillGrid = () => {
         const newGrid = []
-        for (let row = 0; row < rows; row++) {
+        for (let x = 0; x < cols; x++) {
             const gridRow = []
-            for (let col = 0; col < cols; col++) {
+            for (let y = 0; y < rows; y++) {
                 const cell = {
                     isBorder: false
                 }
-                if (row === 0 || row === (rows - 1) || col === 0 || col === (cols - 1)) {
+                if (x === 0 || x === (cols - 1) || y === 0 || y === (rows - 1)) {
                     cell.isBorder = true;
                 }
                 gridRow.push(cell)
@@ -105,69 +113,115 @@ const SnakeExample = (props) => {
         setGrid(newGrid)
     }
 
+
+    const isSnakeEatHerself = !!snake.find((s) => { snake[0].x === s.x && snake[0].y === s.y });
+
     /**
      * в конце проверка: если новая клетка равна клетке границы + 1, то clearInterval и вывод сообщения о конце игры
      */
     function moveSnake() {
-        if (snake[0].column === 0 || snake[0].row === 0) {
-            // clearInterval(handle);
-            // alert("You lose");
-            // handle = 0;
+        if (snake[0].y === 0 || snake[0].x === 0 || snake[0].y === rows - 1 || snake[0].x === cols - 1 || isSnakeEatHerself) {
+            setDelay(null);
+            // <div className="end-game-container">
+            //     <div className="game-text">Вы проиграли! Ваши очки: {score}</div>
+            //     <div className="new-game-button"
+            //         onClick={ }
+            //     >Начать заново</div>
+            // </div>
+            console.log(score);
+            alert("You lose " + " Your score is: " + score)
+            return;
         }
         else {
-            if (snakeState === SNAKE_STATE.UP) { //(то берем значение следующей клетки вверху змейки и последний элемент перемещаем туда)
+            let snakeLastElement;
+            if (snakeState === SNAKE_STATE.UP) {
                 const snakeCopy = [...snake];
-                const snakeLastElement = snakeCopy.pop();
-                snakeLastElement.row = snakeCopy[0].row - 1;
-                snakeLastElement.column = snakeCopy[0].column;
+                snakeLastElement = snakeCopy.pop();
+                snakeLastElement.x = snakeCopy[0].x - 1;
+                snakeLastElement.y = snakeCopy[0].y;
                 snakeCopy.unshift(snakeLastElement);
-                console.log('snakeCopy', snakeCopy);
                 setSnake(snakeCopy);
             }
             if (snakeState === SNAKE_STATE.DOWN) {
                 const snakeCopy = [...snake];
-                const snakeLastElement = snakeCopy.pop();
-                snakeLastElement.row = snakeCopy[0].row + 1;
-                snakeLastElement.column = snakeCopy[0].column;
+                snakeLastElement = snakeCopy.pop();
+                snakeLastElement.x = snakeCopy[0].x + 1;
+                snakeLastElement.y = snakeCopy[0].y;
                 snakeCopy.unshift(snakeLastElement);
-                console.log('snakeCopy', snakeCopy);
                 setSnake(snakeCopy);
             }
             if (snakeState === SNAKE_STATE.RIGHT) {
                 const snakeCopy = [...snake];
-                const snakeLastElement = snakeCopy.pop();
-                snakeLastElement.row = snakeCopy[0].row;
-                snakeLastElement.column = snakeCopy[0].column + 1;
+                snakeLastElement = snakeCopy.pop();
+                snakeLastElement.x = snakeCopy[0].x;
+                snakeLastElement.y = snakeCopy[0].y + 1;
                 snakeCopy.unshift(snakeLastElement);
-                console.log('snakeCopy', snakeCopy);
                 setSnake(snakeCopy);
             }
             if (snakeState === SNAKE_STATE.LEFT) {
                 const snakeCopy = [...snake];
-                const snakeLastElement = snakeCopy.pop();
-                snakeLastElement.column = snakeCopy[0].column - 1;
-                snakeLastElement.row = snakeCopy[0].row;
+                snakeLastElement = snakeCopy.pop();
+                snakeLastElement.y = snakeCopy[0].y - 1;
+                snakeLastElement.x = snakeCopy[0].x;
                 snakeCopy.unshift(snakeLastElement);
-                console.log('snakeCopy', snakeCopy);
                 setSnake(snakeCopy);
             }
+            isFoodPicked();
+
+            // if (isFoodPicked()) {
+            //     // setScore(score + 1);
+            //     const snakeCopy = [...snake];
+            //     let snakeNewFirstElement = {
+            //         x: food.x,
+            //         y: food.y
+            //     };
+            //     // snakeNewFirstElement.x = food.x;
+            //     // snakeNewFirstElement.y = food.y;
+            //     snakeCopy.push(snakeLastElement);
+            //     snakeCopy.push(snakeNewFirstElement);
+            //     // let snakeNewElement
+            //     // snakeCopy.unshift();
+            //     setSnake(snakeCopy);
+            //     generateFood();
+            // }
+            // console.log("lastElement", snakeLastElement);
         }
     }
+    // console.log("snake", snake);
+    // console.log(food);
+    // console.log("grid", grid);
 
-    // console.log('snake render', snake);
+    const getRandomIntInclusive = (min, max) =>
+        Math.floor(Math.random() * (max - min + 1)) + min;
+
+    const isFoodPicked = () => {
+        let tempFood = { ...food };
+        let tempSnake = [...snake];
+        if (tempFood.x === tempSnake[(tempSnake.length - 1)].x && tempFood.y === tempSnake[(tempSnake.length - 1)].y) {
+            tempSnake.unshift(tempFood);
+            setSnake(tempSnake);
+            console.log(snake);
+            setScore(score + 1)
+            generateFood();
+            return true;
+
+        }
+    }
 
     const gridItems = grid.map((row, rowIndex) => {
         return (
             <div className="grid-row" key={rowIndex}>
                 {
                     row.map((cell, cellIndex) => {
-                        const isSnake = !!snake.find((s) => s.row === rowIndex && s.column === cellIndex);
+                        const isFood = (food.y === rowIndex && food.x === cellIndex);
+                        const isSnake = !!snake.find((s) => s.y === rowIndex && s.x === cellIndex);
 
                         return (
                             <div
                                 className={classNames(["grid-item", {
                                     'border': cell.isBorder,
-                                    'snake': isSnake
+                                    'snake': isSnake,
+                                    'food': isFood
                                 }])}
                                 key={`${rowIndex}-${cellIndex}`}
                             />
