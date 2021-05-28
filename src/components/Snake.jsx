@@ -41,6 +41,7 @@ const SnakeExample = (props) => {
     }, [])
 
     useEvent('keyup', (ev) => {
+        console.log(ev.code);
         switch (ev.code) {
             case 'ArrowUp':
                 if ((snakeState !== SNAKE_STATE.UP && snakeState !== SNAKE_STATE.DOWN)) {
@@ -97,9 +98,9 @@ const SnakeExample = (props) => {
 
     const fillGrid = () => {
         const newGrid = []
-        for (let x = 0; x < cols; x++) {
+        for (let y = 0; y < rows; y++) {
             const gridRow = []
-            for (let y = 0; y < rows; y++) {
+            for (let x = 0; x < cols; x++) {
                 const cell = {
                     isBorder: false
                 }
@@ -113,14 +114,15 @@ const SnakeExample = (props) => {
         setGrid(newGrid)
     }
 
+    // console.log(snake.find((s) => { snake[0].x === s.x && snake[0].y === s.y }));
+    // const isSnakeEatHerself = !!snake.find((s) => { snake[0].x === s.x && snake[0].y === s.y });
 
-    const isSnakeEatHerself = !!snake.find((s) => { snake[0].x === s.x && snake[0].y === s.y });
 
     /**
      * в конце проверка: если новая клетка равна клетке границы + 1, то clearInterval и вывод сообщения о конце игры
      */
     function moveSnake() {
-        if (snake[0].y === 0 || snake[0].x === 0 || snake[0].y === rows - 1 || snake[0].x === cols - 1 || isSnakeEatHerself) {
+        if (snake[0].y === 0 || snake[0].x === 0 || snake[0].y === rows - 1 || snake[0].x === cols - 1) {
             setDelay(null);
             // <div className="end-game-container">
             //     <div className="game-text">Вы проиграли! Ваши очки: {score}</div>
@@ -137,32 +139,32 @@ const SnakeExample = (props) => {
             if (snakeState === SNAKE_STATE.UP) {
                 const snakeCopy = [...snake];
                 snakeLastElement = snakeCopy.pop();
-                snakeLastElement.x = snakeCopy[0].x - 1;
-                snakeLastElement.y = snakeCopy[0].y;
+                snakeLastElement.y = snakeCopy[0].y - 1;
+                snakeLastElement.x = snakeCopy[0].x;
                 snakeCopy.unshift(snakeLastElement);
                 setSnake(snakeCopy);
             }
             if (snakeState === SNAKE_STATE.DOWN) {
                 const snakeCopy = [...snake];
                 snakeLastElement = snakeCopy.pop();
-                snakeLastElement.x = snakeCopy[0].x + 1;
-                snakeLastElement.y = snakeCopy[0].y;
+                snakeLastElement.y = snakeCopy[0].y + 1;
+                snakeLastElement.x = snakeCopy[0].x;
                 snakeCopy.unshift(snakeLastElement);
                 setSnake(snakeCopy);
             }
             if (snakeState === SNAKE_STATE.RIGHT) {
                 const snakeCopy = [...snake];
                 snakeLastElement = snakeCopy.pop();
-                snakeLastElement.x = snakeCopy[0].x;
-                snakeLastElement.y = snakeCopy[0].y + 1;
+                snakeLastElement.y = snakeCopy[0].y;
+                snakeLastElement.x = snakeCopy[0].x + 1;
                 snakeCopy.unshift(snakeLastElement);
                 setSnake(snakeCopy);
             }
             if (snakeState === SNAKE_STATE.LEFT) {
                 const snakeCopy = [...snake];
                 snakeLastElement = snakeCopy.pop();
-                snakeLastElement.y = snakeCopy[0].y - 1;
-                snakeLastElement.x = snakeCopy[0].x;
+                snakeLastElement.x = snakeCopy[0].x - 1;
+                snakeLastElement.y = snakeCopy[0].y;
                 snakeCopy.unshift(snakeLastElement);
                 setSnake(snakeCopy);
             }
