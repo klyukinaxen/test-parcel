@@ -80,8 +80,8 @@ const SnakeExample = (props) => {
                 x: 10,
                 y: 10
             }, {
-                x: 11,
-                y: 10
+                x: 10,
+                y: 11
             }
         ]
 
@@ -114,15 +114,22 @@ const SnakeExample = (props) => {
         setGrid(newGrid)
     }
 
-    // console.log(snake.find((s) => { snake[0].x === s.x && snake[0].y === s.y }));
-    // const isSnakeEatHerself = !!snake.find((s) => { snake[0].x === s.x && snake[0].y === s.y });
-
+    const isSnakeEatHerself = () => {
+        console.log(snake);
+        console.log(snake[0]);
+        for (let index = 1; index < snake.length; index++) {
+            if (snake[index].x === snake[0].x && snake[index].y === snake[0].y) {
+                return true;
+            }
+        }
+        return false;
+    }
 
     /**
      * в конце проверка: если новая клетка равна клетке границы + 1, то clearInterval и вывод сообщения о конце игры
      */
     function moveSnake() {
-        if (snake[0].y === 0 || snake[0].x === 0 || snake[0].y === rows - 1 || snake[0].x === cols - 1) {
+        if (snake[0].y === 0 || snake[0].x === 0 || snake[0].y === rows - 1 || snake[0].x === cols - 1 || isSnakeEatHerself()) {
             setDelay(null);
             // <div className="end-game-container">
             //     <div className="game-text">Вы проиграли! Ваши очки: {score}</div>
@@ -130,83 +137,48 @@ const SnakeExample = (props) => {
             //         onClick={ }
             //     >Начать заново</div>
             // </div>
-            console.log(score);
             alert("You lose " + " Your score is: " + score)
             return;
         }
         else {
-            let snakeLastElement;
+            const snakeCopy = [...snake];
+            const snakeLastElement = snakeCopy.pop();
+            const snakeNewElement = { ...snakeLastElement };
+
             if (snakeState === SNAKE_STATE.UP) {
-                const snakeCopy = [...snake];
-                snakeLastElement = snakeCopy.pop();
-                snakeLastElement.y = snakeCopy[0].y - 1;
-                snakeLastElement.x = snakeCopy[0].x;
-                snakeCopy.unshift(snakeLastElement);
-                setSnake(snakeCopy);
+                snakeNewElement.y = snakeCopy[0].y - 1;
+                snakeNewElement.x = snakeCopy[0].x;
             }
             if (snakeState === SNAKE_STATE.DOWN) {
-                const snakeCopy = [...snake];
-                snakeLastElement = snakeCopy.pop();
-                snakeLastElement.y = snakeCopy[0].y + 1;
-                snakeLastElement.x = snakeCopy[0].x;
-                snakeCopy.unshift(snakeLastElement);
-                setSnake(snakeCopy);
+                snakeNewElement.y = snakeCopy[0].y + 1;
+                snakeNewElement.x = snakeCopy[0].x;
             }
             if (snakeState === SNAKE_STATE.RIGHT) {
-                const snakeCopy = [...snake];
-                snakeLastElement = snakeCopy.pop();
-                snakeLastElement.y = snakeCopy[0].y;
-                snakeLastElement.x = snakeCopy[0].x + 1;
-                snakeCopy.unshift(snakeLastElement);
-                setSnake(snakeCopy);
+                snakeNewElement.y = snakeCopy[0].y;
+                snakeNewElement.x = snakeCopy[0].x + 1;
             }
             if (snakeState === SNAKE_STATE.LEFT) {
-                const snakeCopy = [...snake];
-                snakeLastElement = snakeCopy.pop();
-                snakeLastElement.x = snakeCopy[0].x - 1;
-                snakeLastElement.y = snakeCopy[0].y;
-                snakeCopy.unshift(snakeLastElement);
-                setSnake(snakeCopy);
+                snakeNewElement.x = snakeCopy[0].x - 1;
+                snakeNewElement.y = snakeCopy[0].y;
             }
-            isFoodPicked();
+            snakeCopy.unshift(snakeNewElement);
+            setSnake(snakeCopy);
 
-            // if (isFoodPicked()) {
-            //     // setScore(score + 1);
-            //     const snakeCopy = [...snake];
-            //     let snakeNewFirstElement = {
-            //         x: food.x,
-            //         y: food.y
-            //     };
-            //     // snakeNewFirstElement.x = food.x;
-            //     // snakeNewFirstElement.y = food.y;
-            //     snakeCopy.push(snakeLastElement);
-            //     snakeCopy.push(snakeNewFirstElement);
-            //     // let snakeNewElement
-            //     // snakeCopy.unshift();
-            //     setSnake(snakeCopy);
-            //     generateFood();
-            // }
-            // console.log("lastElement", snakeLastElement);
+            isFoodPicked(snakeCopy, snakeLastElement);
         }
     }
-    // console.log("snake", snake);
-    // console.log(food);
-    // console.log("grid", grid);
 
     const getRandomIntInclusive = (min, max) =>
         Math.floor(Math.random() * (max - min + 1)) + min;
 
-    const isFoodPicked = () => {
+    const isFoodPicked = (tempSnake, snakeLastElement) => {
         let tempFood = { ...food };
-        let tempSnake = [...snake];
-        if (tempFood.x === tempSnake[(tempSnake.length - 1)].x && tempFood.y === tempSnake[(tempSnake.length - 1)].y) {
-            tempSnake.unshift(tempFood);
+        if (tempFood.x === tempSnake[0].x && tempFood.y === tempSnake[0].y) {
+            tempSnake.push(snakeLastElement)
             setSnake(tempSnake);
-            console.log(snake);
             setScore(score + 1)
             generateFood();
             return true;
-
         }
     }
 
