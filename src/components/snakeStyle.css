@@ -29,11 +29,26 @@
 }
 
 .grid-item.snake {
-    background: rgba(70, 70, 70, 0.836);
+    background: rgba(52, 77, 59, 0.836);
 }
 
 .grid-item.food {
-    background: rgb(126, 68, 68);
+    background: rgb(194, 132, 132);
+}
+
+.new-game-button {
+    width: 80px;
+    height: 20px;
+    border: 1px solid #000;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    margin: auto;
+}
+
+.button-text {
+    font-size: 16px;
 }
 
 /**/

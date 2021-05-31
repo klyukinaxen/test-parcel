@@ -21,6 +21,7 @@ const SnakeExample = (props) => {
 
     const [food, setFood] = useState({});
     const [score, setScore] = useState(0);
+    const [game, setGame] = useState(true);
 
     /**
      * Направление движения змейки
@@ -66,7 +67,7 @@ const SnakeExample = (props) => {
         }
     })
 
-    /**
+    /** 
      * запускается движение змейки
      */
 
@@ -93,7 +94,15 @@ const SnakeExample = (props) => {
             x: getRandomIntInclusive(2, cols - 2),
             y: getRandomIntInclusive(2, rows - 2)
         }
-        setFood(startFood);
+        if (snake.length > 1) {
+            for (let i = 1; i < snake.length; i++) {
+                if (snake[i].x !== startFood.x && snake[i].y !== startFood.y) {
+                    setFood(startFood);
+                    return;
+                }
+            }
+        }
+        else setFood(startFood);
     }
 
     const fillGrid = () => {
@@ -115,8 +124,6 @@ const SnakeExample = (props) => {
     }
 
     const isSnakeEatHerself = () => {
-        console.log(snake);
-        console.log(snake[0]);
         for (let index = 1; index < snake.length; index++) {
             if (snake[index].x === snake[0].x && snake[index].y === snake[0].y) {
                 return true;
@@ -131,40 +138,37 @@ const SnakeExample = (props) => {
     function moveSnake() {
         if (snake[0].y === 0 || snake[0].x === 0 || snake[0].y === rows - 1 || snake[0].x === cols - 1 || isSnakeEatHerself()) {
             setDelay(null);
-            // <div className="end-game-container">
-            //     <div className="game-text">Вы проиграли! Ваши очки: {score}</div>
-            //     <div className="new-game-button"
-            //         onClick={ }
-            //     >Начать заново</div>
-            // </div>
+            setGame(false);
             alert("You lose " + " Your score is: " + score)
             return;
         }
         else {
-            const snakeCopy = [...snake];
-            const snakeLastElement = snakeCopy.pop();
-            const snakeNewElement = { ...snakeLastElement };
+            if (game) {
+                const snakeCopy = [...snake];
+                const snakeLastElement = snakeCopy.pop();
+                const snakeNewElement = { ...snakeLastElement };
 
-            if (snakeState === SNAKE_STATE.UP) {
-                snakeNewElement.y = snakeCopy[0].y - 1;
-                snakeNewElement.x = snakeCopy[0].x;
-            }
-            if (snakeState === SNAKE_STATE.DOWN) {
-                snakeNewElement.y = snakeCopy[0].y + 1;
-                snakeNewElement.x = snakeCopy[0].x;
-            }
-            if (snakeState === SNAKE_STATE.RIGHT) {
-                snakeNewElement.y = snakeCopy[0].y;
-                snakeNewElement.x = snakeCopy[0].x + 1;
-            }
-            if (snakeState === SNAKE_STATE.LEFT) {
-                snakeNewElement.x = snakeCopy[0].x - 1;
-                snakeNewElement.y = snakeCopy[0].y;
-            }
-            snakeCopy.unshift(snakeNewElement);
-            setSnake(snakeCopy);
+                if (snakeState === SNAKE_STATE.UP) {
+                    snakeNewElement.y = snakeCopy[0].y - 1;
+                    snakeNewElement.x = snakeCopy[0].x;
+                }
+                if (snakeState === SNAKE_STATE.DOWN) {
+                    snakeNewElement.y = snakeCopy[0].y + 1;
+                    snakeNewElement.x = snakeCopy[0].x;
+                }
+                if (snakeState === SNAKE_STATE.RIGHT) {
+                    snakeNewElement.y = snakeCopy[0].y;
+                    snakeNewElement.x = snakeCopy[0].x + 1;
+                }
+                if (snakeState === SNAKE_STATE.LEFT) {
+                    snakeNewElement.x = snakeCopy[0].x - 1;
+                    snakeNewElement.y = snakeCopy[0].y;
+                }
+                snakeCopy.unshift(snakeNewElement);
+                setSnake(snakeCopy);
 
-            isFoodPicked(snakeCopy, snakeLastElement);
+                isFoodPicked(snakeCopy, snakeLastElement);
+            }
         }
     }
 
@@ -206,10 +210,29 @@ const SnakeExample = (props) => {
         )
     })
 
+    const gameRestart = () => {
+        setGame(true);
+        setSnake([{ x: 10, y: 11 }, { x: 11, y: 11 }]);
+        setSnakeState(SNAKE_STATE.UP);
+        isFoodPicked == true;
+        setFood(0);
+        generateFood();
+        setDelay(300);
+        setScore(0);
+    }
+
     return (
-        <div className="grid">
-            {gridItems}
-        </div>
+        <>
+            <div className="grid">
+                {gridItems}
+                <div
+                    className="new-game-button"
+                    onClick={gameRestart}
+                >
+                    <p className="button-text">Restart</p>
+                </div>
+            </div>
+        </>
     )
 }
 
