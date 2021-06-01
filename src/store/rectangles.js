@@ -1,5 +1,6 @@
 import { createContext } from "react"
-import makeAutoObservable from "mobx"
+import { makeObservable, observable, action, toJS, runInAction, makeAutoObservable } from "mobx"
+import { layerDimensions } from "../components/PointsExample"
 
 export  class Rectangles {
 
@@ -21,10 +22,12 @@ export  class Rectangles {
         console.log("enter");
     }
 
-    onMouseLeaveRectangle() {
+    onMouseLeaveRectangle(id) {
         console.log("leave");
     }
 
+    fadeRectangle(id) {
+    }
 
     listInitialize(columns, rows, layerDimensions) {
         this.list = []
@@ -33,13 +36,15 @@ export  class Rectangles {
 
         for (let i = 0; i < columns; i++) {
             for (let j = 0; j < rows; j++) {
-                this.list.push({
-                    x: i * width,
-                    y: j * height,
-                    width,
-                    height,
-                    opacity: 1
-                })
+                this.list.push(
+                    {
+                        x: i * width,
+                        y: j * height,
+                        width,
+                        height,
+                        opacity: 1
+                    }
+                )
             }
         }
     }

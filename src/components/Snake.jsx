@@ -1,6 +1,6 @@
 import { useInterval } from "ahooks";
 import classNames from "classnames";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 
 import { useEvent } from "../hooks";
 
@@ -13,11 +13,10 @@ const SNAKE_STATE = {
     RIGHT: "RIGHT"
 }
 
-const SnakeExample = () => {
-    const cols = 20;
-    const rows = 20;
-    // const [rows, setRows] = useState(20)
-    // const [cols, setCols] = useState(20)
+const SnakeExample = (props) => {
+
+    const [rows, setRows] = useState(20)
+    const [cols, setCols] = useState(20)
     const [grid, setGrid] = useState([])
 
     const [food, setFood] = useState({});
@@ -214,6 +213,7 @@ const SnakeExample = () => {
         setGame(true);
         setSnake([{ x: 10, y: 11 }, { x: 11, y: 11 }]);
         setSnakeState(SNAKE_STATE.UP);
+        isFoodPicked == true;
         setFood(0);
         generateFood();
         setDelay(300);

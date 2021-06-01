@@ -1,7 +1,9 @@
+import { toJS } from "mobx";
 import { observer } from "mobx-react-lite";
 import React, { useContext, useEffect } from "react";
 import { RectanglesContext } from "../store/rectangles";
 import { Stage, Layer, Rect } from 'react-konva'
+import { Link } from "react-router-dom";
 
 export const layerDimensions = {
     width: window.innerWidth,
@@ -22,6 +24,7 @@ const RectanglesExample = observer(() => {
 
     return (
         <div>
+            {/* <Link to="/">/</Link> */}
             <Stage width={layerDimensions.width} height={layerDimensions.height}>
                 <Layer>
                     {store.list.map((rectangle, id) =>

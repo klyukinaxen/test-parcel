@@ -1,5 +1,5 @@
 import { createContext } from "react"
-import { toJS, runInAction, makeAutoObservable } from "mobx"
+import { makeObservable, observable, action, toJS, runInAction, makeAutoObservable } from "mobx"
 import { layerDimensions } from "../components/PointsExample"
 
 function sleep(ms) {
