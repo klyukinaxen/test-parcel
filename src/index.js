@@ -4,15 +4,14 @@ import {
   BrowserRouter as Router,
   Switch,
   Route,
-  Link
 } from "react-router-dom";
-import Component from "./components/Component.js";
+// import Component from "./components/Component.js";
 // import Component1 from "./Component1.js";
 import PointsExample from "./components/PointsExample.jsx"
 import RectanglesExample from "./components/RectanglesExample.jsx";
 import Menu from "./components/Menu.js";
-import AnimatedNumber from './components/AnimatedNumber.jsx'
-import "./style.css"
+// import AnimatedNumber from './components/AnimatedNumber.jsx'
+// import "./style.css"
 import { myTimer, TimerContext } from "./store/points.js";
 import { snake, SnakeContext } from "./store/snake.js";
 import { rectangles, RectanglesContext } from "./store/rectangles.js";

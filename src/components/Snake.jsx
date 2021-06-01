@@ -1,6 +1,6 @@
 import { useInterval } from "ahooks";
 import classNames from "classnames";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import { useEvent } from "../hooks";
 
@@ -13,10 +13,11 @@ const SNAKE_STATE = {
     RIGHT: "RIGHT"
 }
 
-const SnakeExample = (props) => {
-
-    const [rows, setRows] = useState(20)
-    const [cols, setCols] = useState(20)
+const SnakeExample = () => {
+    const cols = 20;
+    const rows = 20;
+    // const [rows, setRows] = useState(20)
+    // const [cols, setCols] = useState(20)
     const [grid, setGrid] = useState([])
 
     const [food, setFood] = useState({});
@@ -38,7 +39,13 @@ const SnakeExample = (props) => {
 <<<<<<< HEAD
 =======
 
+<<<<<<< HEAD
 >>>>>>> parent of 5c9ed40 (after eslint fixes)
+=======
+        let test = 123;
+        console.log(test)
+
+>>>>>>> 5c9ed40311b55bcf0f2bac1c46699a0faa289e80
         return () => {
             console.log('unmount');
         }
@@ -217,7 +224,6 @@ const SnakeExample = (props) => {
         setGame(true);
         setSnake([{ x: 10, y: 11 }, { x: 11, y: 11 }]);
         setSnakeState(SNAKE_STATE.UP);
-        isFoodPicked == true;
         setFood(0);
         generateFood();
         setDelay(300);
