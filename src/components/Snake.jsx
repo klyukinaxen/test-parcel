@@ -36,16 +36,6 @@ const SnakeExample = () => {
         fillGrid();
         snakeInit();
         generateFood();
-<<<<<<< HEAD
-=======
-
-<<<<<<< HEAD
->>>>>>> parent of 5c9ed40 (after eslint fixes)
-=======
-        let test = 123;
-        console.log(test)
-
->>>>>>> 5c9ed40311b55bcf0f2bac1c46699a0faa289e80
         return () => {
             console.log('unmount');
         }

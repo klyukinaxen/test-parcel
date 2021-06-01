@@ -1,8 +1,7 @@
 import { createContext } from "react"
-import makeAutoObservable from "mobx"
-
-export  class Rectangles {
-
+import { makeObservable, observable, action, toJS, runInAction, makeAutoObservable } from "mobx"
+import { layerDimensions } from "../components/PointsExample"
+export class Rectangles {
     list = [{
         x: 0,
         y: 0,

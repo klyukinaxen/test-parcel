@@ -1,5 +1,11 @@
 import React from "react";
-import Link from "react-router-dom";
+import ReactDom from "react-dom";
+import {
+    BrowserRouter as Router,
+    Switch,
+    Route,
+    Link
+} from "react-router-dom";
 
 const Menu = () => {
     return (
