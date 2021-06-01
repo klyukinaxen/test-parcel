@@ -36,10 +36,6 @@ const SnakeExample = () => {
         fillGrid();
         snakeInit();
         generateFood();
-
-        let test = 123;
-        console.log(test)
-
         return () => {
             console.log('unmount');
         }

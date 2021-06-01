@@ -9,6 +9,12 @@ module.exports = {
         // "version": "latest",
         "es2021": true
     },
+    "settings": {
+        "react": {
+            "pragma": "React",
+            "version": "17.0.2"
+        }
+    },
     "extends": [
         "eslint:recommended",
         "plugin:react/recommended"

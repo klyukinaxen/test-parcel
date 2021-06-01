@@ -1,7 +1,7 @@
 import { createContext } from "react"
 import makeAutoObservable from "mobx"
 
-export class Rectangles {
+export  class Rectangles {
 
     list = [{
         x: 0,
