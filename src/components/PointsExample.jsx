@@ -2,7 +2,7 @@ import { observer } from "mobx-react-lite";
 import React, { useContext } from "react";
 import { ColorContext } from "../store/points";
 import Button from '@material-ui/core/Button';
-import { Circle, Stage, Layer, Line } from 'react-konva'
+import { Circle, Stage, Layer} from 'react-konva'
 
 export const layerDimensions={
     width:1400,
@@ -28,33 +28,29 @@ const ButtonComponent = observer(() => {
         }
     }
 
-    const points = store.arrayCircles;
-    const lines = points.length > 1 && (
-        <Line
-            points={points.map((point) => [point.x, point.y]).flat()}
-            stroke="black"
-        >
-        </Line>
-    )
+    // const points = store.arrayCircles;
+    // const lines = points.length > 1 && (
+    //     <Line
+    //         points={points.map((point) => [point.x, point.y]).flat()}
+    //         stroke="black"
+    //     >
+    //     </Line>
+    // )
 
     const clickChangeColor = () => store.changeColor(getId())
 
     const clickHandler = () => {
         store.addCircle(generateCircle())
-        // console.log("координаты центра первого круга:", store.arrayCircles[0].x, " ", store.arrayCircles[0].y);
     };
 
-    const clickHandlerLineDraw = () => {
-        for (let i = 0; i < lines.length; i++) {
-            console.log(lines[i].x);
-        }
-    };
+    // const clickHandlerLineDraw = () => {
+    //     for (let i = 0; i < lines.length; i++) {
+    //         console.log(lines[i].x);
+    //     }
+    // };
 
     const clickRemove = () => {
         store.removeCircle(getId())
-        const len = store.arrayCircles.length
-        // store.arrayCircles.map((point) => { console.log("координаты кружочка", " х: ", point.x, "y: ", point.y); })
-        // console.log("координаты центра последнего нарисованного круга:", store.arrayCircles[len - 1].x, " ", store.arrayCircles[len - 1].y);
     };
 
     const clickHandlerArrangeCircles = () => {
@@ -122,9 +118,6 @@ const ButtonComponent = observer(() => {
                             />
                         )}
                     </>
-
-                    {/* {lines} */}
-
                 </Layer>
             </Stage>
 
