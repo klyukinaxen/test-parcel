@@ -35,6 +35,10 @@ const SnakeExample = (props) => {
         fillGrid();
         snakeInit();
         generateFood();
+<<<<<<< HEAD
+=======
+
+>>>>>>> parent of 5c9ed40 (after eslint fixes)
         return () => {
             console.log('unmount');
         }
