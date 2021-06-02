@@ -1,6 +1,6 @@
-import { createContext } from "react"
-import { toJS, runInAction, makeAutoObservable } from "mobx"
-import { layerDimensions } from "../components/PointsExample"
+import { createContext } from 'react'
+import { toJS, runInAction, makeAutoObservable } from 'mobx'
+import { layerDimensions } from '../components/PointsExample'
 
 function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
@@ -8,7 +8,7 @@ function sleep(ms) {
 
 export class Timer {
     secondsPassed = 1
-    newcolor = "blue"
+    newcolor = 'blue'
     arrayCircles = []
 
     constructor() {
@@ -25,14 +25,14 @@ export class Timer {
     }
 
     randomColor() {
-        const colorArray = ["yellow", "gray", "black", "blue", "red", "green", "orange"]
+        const colorArray = ['yellow', 'gray', 'black', 'blue', 'red', 'green', 'orange']
         return colorArray[Math.floor(Math.random() * (colorArray.length - 1))]
     }
     changeColor(cl) {
         this.arrayCircles[cl].color = this.randomColor();
     }
     toggleColor() {
-        this.newcolor = this.newcolor == "green" ? "blue" : "green"
+        this.newcolor = this.newcolor == 'green' ? 'blue' : 'green'
         localStorage.setItem('color', this.newcolor);
     }
 

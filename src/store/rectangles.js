@@ -1,11 +1,13 @@
-import { createContext } from "react"
-import { makeObservable, observable, action, toJS, runInAction, makeAutoObservable } from "mobx"
-import { layerDimensions } from "../components/PointsExample"
+import { createContext } from 'react'
+import {
+    makeAutoObservable
+} from 'mobx'
+
 export class Rectangles {
     list = [{
         x: 0,
         y: 0,
-        width: 100,
+        width: 300,
         height: 100,
         opacity: 1
     }];
@@ -14,14 +16,13 @@ export class Rectangles {
         makeAutoObservable(this)
     }
 
-
     onMouseEnterRectangle(id) {
         this.list[id].opacity = 0;
-        console.log("enter");
+        console.log('enter');
     }
 
     onMouseLeaveRectangle() {
-        console.log("leave");
+        console.log('leave');
     }
 
 

@@ -1,23 +1,24 @@
-import { useInterval } from "ahooks";
-import classNames from "classnames";
-import React, { useEffect, useState } from "react";
+import { useInterval, useMount, useUnmount } from 'ahooks';
+import classNames from 'classnames';
+import React, { useState } from 'react';
 
-import { useEvent } from "../hooks";
+import { useEvent } from '../hooks';
+import Modal from './Modal';
 
-import "./snakeStyle.css"
+import './snakeStyle.css'
 
 const SNAKE_STATE = {
-    UP: "UP",
-    DOWN: "DOWN",
-    LEFT: "LEFT",
-    RIGHT: "RIGHT"
+    UP: 'UP',
+    DOWN: 'DOWN',
+    LEFT: 'LEFT',
+    RIGHT: 'RIGHT'
 }
 
 const SnakeExample = () => {
     const cols = 20;
     const rows = 20;
-    // const [rows, setRows] = useState(20)
-    // const [cols, setCols] = useState(20)
+    const test = 132;
+
     const [grid, setGrid] = useState([])
 
     const [food, setFood] = useState({});
@@ -30,16 +31,18 @@ const SnakeExample = () => {
     const [snakeState, setSnakeState] = useState(SNAKE_STATE.UP)
     const [snake, setSnake] = useState([])
     const [delay, setDelay] = useState(300)
+    const [modalIsOpen, setModalIsOpen] = useState(false)
 
-    useEffect(() => {
+    useMount(() => {
         console.log('mount');
         fillGrid();
         snakeInit();
         generateFood();
-        return () => {
-            console.log('unmount');
-        }
-    }, [])
+    })
+
+    useUnmount(() => {
+        console.log('unmount');
+    })
 
     useEvent('keyup', (ev) => {
         console.log(ev.code);
@@ -139,7 +142,8 @@ const SnakeExample = () => {
         if (snake[0].y === 0 || snake[0].x === 0 || snake[0].y === rows - 1 || snake[0].x === cols - 1 || isSnakeEatHerself()) {
             setDelay(null);
             setGame(false);
-            alert("You lose " + " Your score is: " + score)
+            // alert("You lose " + " Your score is: " + score)
+            setModalIsOpen(true)
             return;
         }
         else {
@@ -196,7 +200,7 @@ const SnakeExample = () => {
 
                         return (
                             <div
-                                className={classNames(["grid-item", {
+                                className={classNames(['grid-item', {
                                     'border': cell.isBorder,
                                     'snake': isSnake,
                                     'food': isFood
@@ -212,25 +216,42 @@ const SnakeExample = () => {
 
     const gameRestart = () => {
         setGame(true);
-        setSnake([{ x: 10, y: 11 }, { x: 11, y: 11 }]);
+        setSnake([{ x: 10, y: 10 }, { x: 10, y: 11 }]);
         setSnakeState(SNAKE_STATE.UP);
         setFood(0);
         generateFood();
         setDelay(300);
         setScore(0);
+
+        modalOnClose()
+    }
+
+    const modalOnClose = () => {
+        setModalIsOpen(false)
     }
 
     return (
         <>
             <div className="grid">
                 {gridItems}
-                <div
-                    className="new-game-button"
-                    onClick={gameRestart}
-                >
-                    <p className="button-text">Restart</p>
-                </div>
             </div>
+
+            <Modal
+                isOpen={modalIsOpen}
+                onClose={modalOnClose}
+            >
+                <div>
+                    <p>Your Score is: {score} </p>
+                    <div
+                        className="new-game-button"
+                        onClick={gameRestart}
+                    >
+                        <p className="button-text">Restart</p>
+                    </div>
+
+                    <div className="modal-form"></div>
+                </div>
+            </Modal>
         </>
     )
 }

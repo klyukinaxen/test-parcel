@@ -1,13 +1,13 @@
-import { observer } from "mobx-react-lite";
-import React, { useContext } from "react";
-import { ColorContext } from "../store/points";
+import { observer } from 'mobx-react-lite';
+import React, { useContext } from 'react';
+import { ColorContext } from '../store/points';
 import Button from '@material-ui/core/Button';
 import { Circle, Stage, Layer} from 'react-konva'
 
 export const layerDimensions={
     width:1400,
     height:400
-}  ;
+};
                
 const ButtonComponent = observer(() => {
 
@@ -24,7 +24,7 @@ const ButtonComponent = observer(() => {
             x: getRandomIntInclusive(radius, layerDimensions.width - radius),
             y: getRandomIntInclusive(radius, layerDimensions.height - radius),
             radius: radius,
-            color: "blue"
+            color: 'blue'
         }
     }
 

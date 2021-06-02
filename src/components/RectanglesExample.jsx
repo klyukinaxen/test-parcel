@@ -1,6 +1,6 @@
-import { observer } from "mobx-react-lite";
-import React, { useContext, useEffect } from "react";
-import { RectanglesContext } from "../store/rectangles";
+import { observer } from 'mobx-react-lite';
+import React, { useContext, useEffect } from 'react';
+import { RectanglesContext } from '../store/rectangles';
 import { Stage, Layer, Rect } from 'react-konva'
 
 export const layerDimensions = {
@@ -13,7 +13,7 @@ const RectanglesExample = observer(() => {
 
     useEffect(() => {
         console.log('mount');
-        store.listInitialize(10, 10, layerDimensions);
+        store.listInitialize(30, 10, layerDimensions);
 
         return () => {
             console.log('unmount')

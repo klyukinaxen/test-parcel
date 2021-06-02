@@ -1,6 +1,5 @@
-import { createContext } from "react"
-import { toJS, makeAutoObservable } from "mobx"
-
+import { createContext } from 'react'
+import { toJS, makeAutoObservable } from 'mobx'
 
 export class SnakeGame {
 

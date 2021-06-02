@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react"
+import { useEffect, useRef } from 'react'
 
 /**
  * https://atomizedobjects.com/blog/react/add-event-listener-react-hooks/
