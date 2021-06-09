@@ -44,8 +44,7 @@ const SnakeExample = () => {
         console.log('unmount');
     })
 
-    useEvent('keyup', (ev) => {
-        console.log(ev.code);
+    useEvent('keyup', (ev) => { //проверка нажатой клавиши на клавиатуре
         switch (ev.code) {
             case 'ArrowUp':
                 if ((snakeState !== SNAKE_STATE.UP && snakeState !== SNAKE_STATE.DOWN)) {
@@ -78,6 +77,7 @@ const SnakeExample = () => {
         moveSnake();
     }, delay);
 
+    //начальная инициализация змейки
     const snakeInit = () => {
         const startSnake = [
             {
@@ -92,22 +92,23 @@ const SnakeExample = () => {
         setSnake(startSnake)
     }
 
+    //генерация еды
     const generateFood = () => {
         const startFood = {
             x: getRandomIntInclusive(2, cols - 2),
             y: getRandomIntInclusive(2, rows - 2)
         }
-        if (snake.length > 1) {
-            for (let i = 1; i < snake.length; i++) {
-                if (snake[i].x !== startFood.x && snake[i].y !== startFood.y) {
-                    setFood(startFood);
-                    return;
-                }
-            }
+        console.log('snake', snake);
+        console.log('startFood', startFood);
+
+        //проверка на принадлежность клетки еды к змейке, чтобы еда не сгенерировалась на змейку
+        if (snake.find(ch => ch.x === startFood.x && ch.y === startFood.y)) {
+            return generateFood();
         }
-        else setFood(startFood);
+        setFood(startFood);
     }
 
+    //инициализация сетки для игры
     const fillGrid = () => {
         const newGrid = []
         for (let y = 0; y < rows; y++) {
@@ -126,6 +127,7 @@ const SnakeExample = () => {
         setGrid(newGrid)
     }
 
+    //проверка на столкновение змейки с самой собой
     const isSnakeEatHerself = () => {
         for (let index = 1; index < snake.length; index++) {
             if (snake[index].x === snake[0].x && snake[index].y === snake[0].y) {
@@ -135,14 +137,11 @@ const SnakeExample = () => {
         return false;
     }
 
-    /**
-     * в конце проверка: если новая клетка равна клетке границы + 1, то clearInterval и вывод сообщения о конце игры
-     */
+    //функция движения змейки
     function moveSnake() {
         if (snake[0].y === 0 || snake[0].x === 0 || snake[0].y === rows - 1 || snake[0].x === cols - 1 || isSnakeEatHerself()) {
             setDelay(null);
             setGame(false);
-            // alert("You lose " + " Your score is: " + score)
             setModalIsOpen(true)
             return;
         }
@@ -176,20 +175,25 @@ const SnakeExample = () => {
         }
     }
 
+    //генерация рандомного числа
     const getRandomIntInclusive = (min, max) =>
         Math.floor(Math.random() * (max - min + 1)) + min;
 
+    //проверка собрана ли еда
     const isFoodPicked = (tempSnake, snakeLastElement) => {
         let tempFood = { ...food };
         if (tempFood.x === tempSnake[0].x && tempFood.y === tempSnake[0].y) {
+            console.log('eat');
             tempSnake.push(snakeLastElement)
             setSnake(tempSnake);
-            setScore(score + 1)
+            setScore(score + 1);
             generateFood();
+
             return true;
         }
     }
 
+    //присваивание особых свойств ячейке игровой сетки (свойства границы, еды и змейки)
     const gridItems = grid.map((row, rowIndex) => {
         return (
             <div className="grid-row" key={rowIndex}>
@@ -205,6 +209,8 @@ const SnakeExample = () => {
                                     'snake': isSnake,
                                     'food': isFood
                                 }])}
+                                y={rowIndex}
+                                x={cellIndex}
                                 key={`${rowIndex}-${cellIndex}`}
                             />
                         )
@@ -214,6 +220,7 @@ const SnakeExample = () => {
         )
     })
 
+    //перезапуск игры, обнуление всех интервалов и счетчиков
     const gameRestart = () => {
         setGame(true);
         setSnake([{ x: 10, y: 10 }, { x: 10, y: 11 }]);
@@ -226,12 +233,15 @@ const SnakeExample = () => {
         modalOnClose()
     }
 
+    //закрытие модального окна
     const modalOnClose = () => {
         setModalIsOpen(false)
     }
 
     return (
         <>
+            <p className="score">Your Score is: {score} (snake lenght: {snake.length})</p>
+
             <div className="grid">
                 {gridItems}
             </div>
@@ -240,8 +250,10 @@ const SnakeExample = () => {
                 isOpen={modalIsOpen}
                 onClose={modalOnClose}
             >
-                <div>
-                    <p>Your Score is: {score} </p>
+                <div className="modal">
+                    <div className="image" />
+
+                    <p>game over</p>
                     <div
                         className="new-game-button"
                         onClick={gameRestart}

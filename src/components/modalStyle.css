@@ -19,14 +19,14 @@
 .modal-container {
     z-index: 900;
     width: 200px;
-    height: 100px;
+    height: 200px;
     background-color: #fff;
     overflow: auto;
     display: flex;
     flex-direction: row;
     justify-content: center;
     align-items: center;
-    border-radius: 5px;
+    border-radius: 10px;
     padding: 10px;
 }
 

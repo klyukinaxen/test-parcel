@@ -1,5 +1,3 @@
-/*Grid Draw*/
-
 .grid-container {
     display: flex;
     align-items: center;
@@ -37,19 +35,28 @@
 }
 
 .new-game-button {
-    width: 80px;
-    height: 20px;
+    width: 90px;
+    height: 25px;
     border: 1px solid #000;
+    border-radius: 10px;
+    background-color: #fff;
+    color: #000;
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: center;
     margin: auto;
     cursor: pointer;
+    transition: background-color .2s linear;
+}
+
+.new-game-button:hover {
+    background-color: rgb(108, 175, 112);
+    border: 1px solid rgb(108, 175, 112);
 }
 
 .button-text {
-    font-size: 16px;
+    font-size: 18px;
 }
 
 /**/
@@ -64,4 +71,22 @@
 .game-text {
     font-size: 14px;
     color: rgb(2, 46, 2);
+}
+
+.image {
+    background-image: url("../images/snake-gif.gif");
+    width: 50px;
+    height: 50px;
+    background-repeat: no-repeat;
+    background-size: contain;
+}
+
+.modal {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.score {
+    text-align: center;
 }
